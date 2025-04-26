@@ -1,26 +1,26 @@
 import { Routes, Route } from "react-router-dom";
+import { useState } from "react";
 import Navbar from "./Header/header";
 import Footer from "./Footer/footer";
 import Hero from "./components/Main";
 import Home from "./components/Home";
-import SignIn from "./auth/signIn";
-import SignUp from "./auth/signUp";
 import Dashboard from "./components/Dashboard";
 import Profile from "./components/Profile";
 import ProductCard from "./pages/productCard";
-import Shop from "./pages/shop";
+import Blog from "./pages/Blog";
 import PrivateRoute from "./isProtected/PrivateRoute";
+import ModalAuth from "./modalPopUp/ModalAuth"; 
 
 function App() {
+  const [openModal, setOpenModal] = useState(false);
+
   return (
     <>
-      <Navbar />
+      <Navbar onOpenModal={() => setOpenModal(true)} />
 
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Home onOpenModal={() => setOpenModal(true)} />} />
         <Route path="/Main" element={<Hero />} />
-        <Route path="/signIn" element={<SignIn />} />
-        <Route path="/signUp" element={<SignUp />} />
         <Route
           path="/profile"
           element={
@@ -45,16 +45,11 @@ function App() {
             </PrivateRoute>
           }
         />
-        <Route
-          path="/shop"
-          element={
-            <PrivateRoute>
-              <Shop />
-            </PrivateRoute>
-          }
-        />
+        <Route path="/Blog" element={<Blog />} />
       </Routes>
-      
+
+      <ModalAuth open={openModal} onClose={() => setOpenModal(false)} />
+
       <Footer />
     </>
   );
